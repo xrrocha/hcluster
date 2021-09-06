@@ -1,5 +1,6 @@
 .bsp/
 .idea/
+.local/
 .project/
 target/
 *.log
