@@ -34,7 +34,7 @@ object SimilarityMatrix:
 
   def apply(scoreSimilarity: (Index, Index) => Similarity,
             pairs: Iterable[(Index, Index)],
-            minThreshold: Similarity = 0d)
+            lowThreshold: Similarity = 0d)
   : SimilarityMatrix =
 
     def addPair(accum: (Index, SparseMatrix), triplet: (Index, Index, Similarity)): (Index, SparseMatrix) =
@@ -44,7 +44,7 @@ object SimilarityMatrix:
       val pairMax = math.max(leftIndex, rightIndex)
       val newMaxIndex = if (pairMax > maxIndex) pairMax else maxIndex
 
-      if similarity <= minThreshold then (newMaxIndex, map)
+      if similarity <= lowThreshold then (newMaxIndex, map)
       else
         val (i, j) = orderedIndexes(leftIndex, rightIndex)
         (newMaxIndex, map + (i -> (map.getOrElse(i, Map.empty) + (j -> similarity))))
