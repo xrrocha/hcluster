@@ -7,24 +7,6 @@ import org.scalatest.matchers.*
 
 class SimilarityMatrixTest extends AnyFlatSpec with should.Matchers :
 
-  val names = Seq(
-    "alejandro", "alejandrín", "alejandrón",
-    "felipe", "felipín", "felipón",
-    "camilo", "camilín", "camilón",
-    "diego", "dieguín", "diegón",
-    "jeffrey", "jeffrín", "jeffrón"
-  )
-
-  val stringDistance = LevensteinDistance()
-
-  def scoreSimilarity(i: Index, j: Index) = stringDistance.getDistance(names(i), names(j))
-
-  val similarityMatrix = SimilarityMatrix(
-    scoreSimilarity = scoreSimilarity,
-    pairs = for (i <- names.indices; j <- i + 1 until names.length) yield (i, j),
-    minThreshold = 0.0
-  )
-
   "A similarity matrix" should "compute correct size" in {
     similarityMatrix.size should be(names.length)
   }
@@ -63,11 +45,11 @@ class SimilarityMatrixTest extends AnyFlatSpec with should.Matchers :
   }
 
   "A similarity matrix" should "return zero below threshold" in {
-    val minThreshold = 0.5
+    val lowThreshold = 0.5
     val similarityMatrix = SimilarityMatrix(
       scoreSimilarity = scoreSimilarity,
       pairs = for (i <- names.indices; j <- i + 1 until names.length) yield (i, j),
-      minThreshold = minThreshold
+      lowThreshold = lowThreshold
     )
     for
       i <- names.indices
@@ -75,7 +57,7 @@ class SimilarityMatrixTest extends AnyFlatSpec with should.Matchers :
     do
       val similarity = scoreSimilarity(i, j)
       similarityMatrix(i, j) should be(
-        if similarity <= minThreshold then 0.0
+        if similarity <= lowThreshold then 0.0
         else similarity
       )
   }
