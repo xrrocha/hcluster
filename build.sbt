@@ -1,4 +1,4 @@
-name := "hcluster"
+name := "hcluster-scala"
 
 version := "0.1"
 
